@@ -1,3 +1,3 @@
 <template>
-  <h2>Money List</h2>
+  <h2>Marcador De Despesas</h2>
 </template>
