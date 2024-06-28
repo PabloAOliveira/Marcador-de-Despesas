@@ -3,7 +3,10 @@
   <div class="container">
     <Balance :total="+total"></Balance>
     <IncomeExpense :renda="+renda" :despesas="+despesas"></IncomeExpense>
-    <TransactionList :transactions="transactions"></TransactionList>
+    <TransactionList
+      :transactions="transactions"
+      @transactionDeleted="handleTrasactionDeleted"
+    ></TransactionList>
     <AddTransaction
       @transactionSubmited="handleTransactionSubmited"
     ></AddTransaction>
@@ -19,16 +22,19 @@ import AddTransaction from "./components/AddTransaction.vue";
 
 import { useToast } from "vue-toastification";
 
-import { ref, computed } from "vue";
+import { ref, computed, onMounted } from "vue";
 
 const toast = useToast();
 
-const transactions = ref([
-  { id: 1, text: "Flower", amount: -19.99 },
-  { id: 2, text: "Salario", amount: 200.99 },
-  { id: 3, text: "Livros", amount: -10.99 },
-  { id: 4, text: "FreeLance", amount: 150 },
-]);
+const transactions = ref([]);
+
+onMounted(() => {
+  const savedTransactions = JSON.parse(localStorage.getItem("transactions"));
+
+  if (savedTransactions) {
+    transactions.value = savedTransactions;
+  }
+});
 
 // Pegar o total
 const total = computed(() => {
@@ -65,11 +71,27 @@ const handleTransactionSubmited = (transactionsData) => {
     amount: transactionsData.amount,
   });
 
-  toast.succes("Transição Adicionada");
+  saveTransactionsToLocalStorage();
+
+  toast.success("Transição Adicionada");
 };
 
 // Gerar ID unico
 const generateUniqueId = () => {
   return Math.floor(Math.random() * 1000000);
+};
+
+// Deletar transacao
+const handleTrasactionDeleted = (id) => {
+  transactions.value = transactions.value.filter(
+    (transactions) => transactions.id !== id
+  );
+
+  toast.success("Transação Deletada");
+};
+
+// Salvar no localstorage
+const saveTransactionsToLocalStorage = () => {
+  localStorage.setItem("transactions", JSON.stringify(transactions.value));
 };
 </script>
