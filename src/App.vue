@@ -94,4 +94,9 @@ const handleTrasactionDeleted = (id) => {
 const saveTransactionsToLocalStorage = () => {
   localStorage.setItem("transactions", JSON.stringify(transactions.value));
 };
+
+// Deletar transacao do localStorage
+// const deleteTransactionsToLocalStorage = () => {
+//   localStorage.removeItem("transactions");
+// };
 </script>

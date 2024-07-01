@@ -16,7 +16,7 @@
         (Negativo - despesa, Positivo - renda)</label
       >
       <input
-        type="text"
+        type="number"
         id="amount"
         v-model="amount"
         placeholder="Insira o valor..."
