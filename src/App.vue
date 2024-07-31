@@ -87,6 +87,8 @@ const handleTrasactionDeleted = (id) => {
     (transactions) => transactions.id !== id
   );
 
+  deleteTransactionsToLocalStorage(id);
+
   toast.success("Transação Deletada");
 };
 
@@ -96,7 +98,12 @@ const saveTransactionsToLocalStorage = () => {
 };
 
 // Deletar transacao do localStorage
-// const deleteTransactionsToLocalStorage = () => {
-//   localStorage.removeItem("transactions");
-// };
+const deleteTransactionsToLocalStorage = (id) => {
+  const transactions = JSON.parse(localStorage.getItem("transactions") ?? "[]");
+  const indexOf = transactions.findIndex((item) => item.id === id);
+  if (indexOf !== -1) {
+    transactions.splice(indexOf, 1);
+    localStorage.setItem("transactions", JSON.stringify(transactions));
+  }
+};
 </script>
